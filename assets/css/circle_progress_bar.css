@@ -1,0 +1,23 @@
+.my-progress-bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60px !important;
+    width: 60px !important;
+}
+.my-progress-bar canvas {
+    height: 60px !important;
+    width: 60px !important;
+}
+
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    font-family: verdana;
+    font-weight: bold;
+    color: #0ff;
+}

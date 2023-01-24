@@ -87,6 +87,7 @@ if (isset($_SESSION['userAddress'])) {
     <!-- Responsive -->
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/mobileDrawer.css" />
+    <link rel="stylesheet" href="assets/css/circle_progress_bar.css">
     <!-- Google Tag Manager -->
     <script>
         (function(w, d, s, l, i) {
@@ -2669,6 +2670,18 @@ if (isset($_SESSION['userAddress'])) {
     <script src="./frontend/web3-login.js?v=009">
     </script>
     <script src="./frontend/web3-modal.js?v=001"></script>
+    <script type="text/javascript" src="https://www.jqueryscript.net/demo/jQuery-Circular-Progress-Bar-With-Text-Counter/scripts/plugin.js"></script>
+    <script>
+        $(document).ready(function() {
+            var progress_circle = $(".my-progress-bar").gmpc({
+                line_width: 18,
+                color: "#0ff",
+                starting_position: 50,
+                percent: 0,
+                percentage: true,
+            }).gmpc('animate', 85, 3000);
+        });
+    </script>
     <script>
         const getIP = async () => {
             const response = await fetch('https://finflix.finstreet.in/php/API/visitors');

@@ -139,12 +139,13 @@ if (mysqli_num_rows($result_view_2) > 0) {
         $total_contributor = $row_view_2['total_contributor'];
     }
 }
-
-$get_view_query_3 = "SELECT user_uid FROM `user_login` WHERE `metamask_address`='$user_address';";
+$total_view_in_sec = '';
+$get_view_query_3 = "SELECT * FROM `user_login` WHERE `metamask_address`='$user_address';";
 $result_view_3 = mysqli_query($con, $get_view_query_3);
 if (mysqli_num_rows($result_view_3) > 0) {
     while ($row_view_3 = mysqli_fetch_array($result_view_3)) {
         $user_uid_new = $row_view_3['user_uid'];
+        $total_view_in_sec = $row_view_3['total_time_spend_sec'];
     }
 }
 
@@ -923,6 +924,8 @@ $user_uid2 = $user_uid;
         </div>
     </div>
     <!-- new loader end -->
+    <input type="hidden" id="user_uid" value="<?php echo $user_uid_new ?? null; ?>">
+    <input type="hidden" name="total_view_sec" value="<?= $total_view_in_sec ?>" id="total_view_in_sec">
     <!-- Banner Start -->
     <?php if (isset($_GET['course'])) { ?>
         <input type="hidden" name="videoUId" id="videoUId" value="<?= $video_uuid_new ?>">
@@ -1091,10 +1094,12 @@ $user_uid2 = $user_uid;
                                                                         <div class="viewModal-username text-truncate" style="width:7.5rem;">
                                                                             <?= $show_userName ?></div>
                                                                         <div class="viewModal-address-wrapper" style="color: #dee2e6;background: rgb(0 0 0 / 50%);">
-                                                                            <div class="viewModal-address"><?= $show_userAddress ?></div>
+                                                                            <div class="viewModal-address"><?= $show_userAddress ?>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="viewModal-inner-rank ml-3 <?php echo $ii <= 3 ? 'topRanker' : '' ?>"><?= $pay_amount_new ?>&nbsp;<?= $amount_in_new ?>
+                                                                    <div class="viewModal-inner-rank ml-3 <?php echo $ii <= 3 ? 'topRanker' : '' ?>">
+                                                                        <?= $pay_amount_new ?>&nbsp;<?= $amount_in_new ?>
                                                                     </div>
                                                                 </div>
                                                             </a></div>
@@ -1127,7 +1132,9 @@ $user_uid2 = $user_uid;
                                     <div class="col-lg-7 col-md-12">
                                         <div class="crowdfunding-area-setting my-3">
                                             <div class="progress">
-                                                <div class="progress-bar progress-bar-setting" role="progressbar" style="width: 25%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="span_percentage_view">0</span>%</div>
+                                                <div class="progress-bar progress-bar-setting" role="progressbar" style="width: 25%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                    <span id="span_percentage_view">0</span>%
+                                                </div>
                                             </div>
                                             <div class="row my-3">
                                                 <div class="col-3">
@@ -1149,7 +1156,8 @@ $user_uid2 = $user_uid;
                                                 <div class="col-3">
                                                     <div class="d-flex justify-content-center align-items-center fundDetailsData">
                                                         <div class="d-flex flex-column">
-                                                            <div class="second_text"><span id="target_amount_view">0,000</span>&nbsp;<span id="amount_in_view" class="amount_in_view">ETH</span></span></div>
+                                                            <div class="second_text"><span id="target_amount_view">0,000</span>&nbsp;<span id="amount_in_view" class="amount_in_view">ETH</span></span>
+                                                            </div>
                                                             <div class="little_text">Target</div>
                                                         </div>
                                                     </div>
@@ -1157,7 +1165,8 @@ $user_uid2 = $user_uid;
                                                 <div class="col-3">
                                                     <div class="d-flex justify-content-center align-items-center fundDetailsData">
                                                         <div class="d-flex flex-column">
-                                                            <div class="second_text"><span id="percentage_view">0</span>%</span></div>
+                                                            <div class="second_text"><span id="percentage_view">0</span>%</span>
+                                                            </div>
                                                             <div class="little_text"> Collected</div>
                                                         </div>
                                                     </div>
@@ -1600,7 +1609,8 @@ $user_uid2 = $user_uid;
                                             <div class="viewModal-username text-truncate" style="width:7.5rem;">
                                                 <?= $show_userName ?></div>
                                             <div class="viewModal-address-wrapper" style="background: rgb(0 0 0 / 44%);color: rgb(139 138 137);">
-                                                <div class="viewModal-address" style="color:#d1d0cf;"><?= $show_userAddress ?></div>
+                                                <div class="viewModal-address" style="color:#d1d0cf;"><?= $show_userAddress ?>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="viewModal-inner-rank <?php echo $ii <= 3 ? 'topRanker' : '' ?>">#<?= $ii ?>
@@ -1818,6 +1828,7 @@ $user_uid2 = $user_uid;
     <!-- bnb -->
     <script src="contract/bnb/bnbProjectFunding.js"></script>
     <script src="contract/bnb/bnbContract.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
         $(".avatar-image").letterpic({
             colors: [
@@ -2941,7 +2952,6 @@ $user_uid2 = $user_uid;
                     comment_uid: comment_uid
                 },
                 success: function(data) {
-                    console.log(data);
                     if (data.status == 201) {
                         window.location.reload();
                     } else if (data.status == 301) {
@@ -2964,7 +2974,6 @@ $user_uid2 = $user_uid;
                     subcomment_uid: subcomment_uid
                 },
                 success: function(data) {
-                    console.log(data);
                     if (data.status == 201) {
                         window.location.reload();
                     } else if (data.status == 301) {
@@ -2976,21 +2985,60 @@ $user_uid2 = $user_uid;
             });
         }
 
-        // document.querySelector("video").onended = function() {
-        //     if (this.played.end(0) - this.played.start(0) === this.duration) {
-        //         console.log("Played all",this.played.end(0));
-        //     } else {
-        //         console.log("Some parts were skipped",this.played.end(0));
-        //     }
-        // }
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
 
-        // document.querySelector("video").ontimeupdate = function() {
-        //     console.log(this.currentTime)
-        // }
+        var oldTime = 0.00;
+        setInterval(() => {
+            const videoId = document.querySelector("video");
+            const dbData = Math.round(parseFloat($('#total_view_in_sec').val()));
+            const newTime = Math.round(parseFloat(videoId.currentTime));
+            const user_uid = $('#user_uid').val();
+            var prev = Math.round(parseFloat(getCookie('time')));
+            const is_cookies = $.cookie('time');
+            if (is_cookies || is_cookies !== undefined || is_cookies !== null) {
+                if (prev < dbData) {
+                    prev = dbData;
+                } else {
+                    prev = prev;
+                }
+            } else {
+                prev = dbData;
+            }
 
-        // document.querySelector("video").onplay = function(){
-        //     console.log(this)
-        // }
+            if (oldTime < newTime) {
+                if (prev) {
+                    const resultdate = prev + (10);
+                    document.cookie = `time=${resultdate}`;
+                    $.ajax({
+                        url: "php/dashboardData/setTimeSpendData.php",
+                        method: "POST",
+                        dataType: "json",
+                        data: {
+                            user_uid: user_uid,
+                            view_in_sec: resultdate
+                        },
+                        success: function(data) {
+                            if (data.status == 201) {
+                                console.log(data.status);
+                            } else if (data.status == 301) {
+                                console.log(data.error);
+                            } else {
+                                //     swal("problem with query");
+                            }
+                        }
+                    });
+                } else {
+                    const resultdate = newTime;
+                    document.cookie = `time=${resultdate}`;
+                }
+                console.log(newTime);
+                oldTime = newTime;
+            }
+        }, 10000);
     </script>
 </body>
 
