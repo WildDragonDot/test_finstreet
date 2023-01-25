@@ -244,17 +244,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
                                                                                 <h6 class="mb-0 ">My Favourite</h6>
                                                                             </div>
                                                                         </div>
-                                                                    </a>
-                                                                    <a href="./setting" class="iq-sub-card setting-dropdown">
-                                                                        <div class="media align-items-center">
-                                                                            <div class="right-icon">
-                                                                                <i class="ri-settings-4-line text-primary"></i>
-                                                                            </div>
-                                                                            <div class="media-body ml-3">
-                                                                                <h6 class="mb-0 ">Setting</h6>
-                                                                            </div>
-                                                                        </div>
-                                                                    </a>
+                                                                    </a>                                                                    
                                                                     <a href="logout" class="iq-sub-card setting-dropdown">
                                                                         <div class="media align-items-center">
                                                                             <div class="right-icon">
@@ -353,17 +343,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
                                                                         <h6 class="mb-0 ">My Favourite</h6>
                                                                     </div>
                                                                 </div>
-                                                            </a>
-                                                            <a href="./setting" class="iq-sub-card setting-dropdown">
-                                                                <div class="media align-items-center">
-                                                                    <div class="right-icon">
-                                                                        <i class="ri-settings-4-line text-primary"></i>
-                                                                    </div>
-                                                                    <div class="media-body ml-3">
-                                                                        <h6 class="mb-0 ">Setting</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
+                                                            </a>                                                            
                                                             <a href="logout" class="iq-sub-card setting-dropdown">
                                                                 <div class="media align-items-center">
                                                                     <div class="right-icon">
