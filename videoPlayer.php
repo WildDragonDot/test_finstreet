@@ -3038,7 +3038,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
             if (oldTime < newTime) {
                 if (prev) {
                     const resultdate = prev + (10);
-                    document.cookie = `time=${resultdate}`;
+                    document.cookie = `time=${resultdate}; expires=Tue, 19 Jan 2038 04:14:07 GMT`;
                     $.ajax({
                         url: "php/dashboardData/setTimeSpendData.php",
                         method: "POST",
@@ -3059,7 +3059,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
                     });
                 } else {
                     const resultdate = newTime;
-                    document.cookie = `time=${resultdate}`;
+                    document.cookie = `time=${resultdate}; expires=Tue, 19 Jan 2038 04:14:07 GMT`;
                 }
                 console.log(newTime);
                 oldTime = newTime;
