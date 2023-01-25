@@ -1759,9 +1759,6 @@ if ($user_address == null || $user_address == '') {
     });
 </script>
 <script>
-    $(document).ready(function() {
-        customBar.show();
-    });
     var customBar = new $.peekABar({
         backgroundColor: '#17a2b8',
         padding: '1em',
@@ -1780,6 +1777,15 @@ if ($user_address == null || $user_address == '') {
     $('.btn-custom-hide').click(function() {
         customBar.hide();
     });
+
+    var is_modal_show = sessionStorage.getItem('alreadyShow');
+
+    if (is_modal_show !== 'alredy shown') {
+        customBar.show()
+        sessionStorage.setItem('alreadyShow', 'alredy shown');
+    } else {
+        customBar.hide();
+    }
 </script>
 </body>
 

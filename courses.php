@@ -1310,10 +1310,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
             }
         }
     </script>
-        <script>
-        $(document).ready(function() {
-            customBar.show();
-        });
+    <script>
         var customBar = new $.peekABar({
             backgroundColor: '#17a2b8',
             padding: '1em',
@@ -1332,6 +1329,15 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
         $('.btn-custom-hide').click(function() {
             customBar.hide();
         });
+
+        var is_modal_show = sessionStorage.getItem('alreadyShow');
+
+        if (is_modal_show !== 'alredy shown') {
+            customBar.show()
+            sessionStorage.setItem('alreadyShow', 'alredy shown');
+        } else {
+            customBar.hide();
+        }
     </script>
 </body>
 
