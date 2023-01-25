@@ -27,7 +27,7 @@ $user_row_address = '';
 $video_like = '';
 $video_dislike = '';
 $video_views = '';
-$user_address = '';
+$user_address_new = '';
 $post_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 if (isset($_GET['course']) && isset($_GET['module'])) {
     $course = $_GET['course'];
@@ -56,7 +56,7 @@ if (isset($_GET['course']) && isset($_GET['module'])) {
             $video_like = number_format_short($row['video_like']);
             $video_dislike = number_format_short($row['video_dislike']);
             $video_views = number_format_short($row['video_views']);
-            $user_address = $row['user_address'];
+            $user_address_new = $row['user_address'];
             $is_croudfunded = $row['is_croudfunded'];;
             $crowd_min_amount = $row['minimum_pay'];
             $project_address = $row['project_address'];
@@ -106,7 +106,7 @@ function number_format_short($n, $precision = 1)
 }
 $user_like_status = false;
 $video_current_status = '';
-$is_user_exits = mysqli_query($con, "SELECT * FROM `video_like_dislike_info` WHERE `video_id` = '$video_uuid_new' AND `user_id` = '$user_address'");
+$is_user_exits = mysqli_query($con, "SELECT * FROM `video_like_dislike_info` WHERE `video_id` = '$video_uuid_new' AND `user_id` = '$user_address_new'");
 
 if (mysqli_num_rows($is_user_exits) != 0) {
     $user_like_status = true;
@@ -152,6 +152,18 @@ if (mysqli_num_rows($result_view_3) > 0) {
 $user_uid = $user_uid_new;
 $user_uid2 = $user_uid;
 // croud funding data get end
+
+$total_time_to_reward = mysqli_query($con, "SELECT * FROM `site_extra_setting` WHERE 1");
+$total_time_to_reward_in_hr = 0;
+if (mysqli_num_rows($total_time_to_reward) != 0) {
+    $user_like_status = true;
+    while ($row = mysqli_fetch_assoc($total_time_to_reward)) {
+        $total_time_to_reward_in_hr = $row['total_time_to_reward_in_hr'];
+    }
+} else {
+    $total_time_to_reward_in_hr = 0;
+}
+
 ?>
 <!doctype html>
 <html lang="en-US">
@@ -208,6 +220,7 @@ $user_uid2 = $user_uid;
     <link rel="stylesheet" href="assets/css/newLoader.css">
     <link rel="stylesheet" href="assets/css/croudFundingUI.css">
     <link rel="stylesheet" href="assets/css/slider_panel.css">
+    <link rel="stylesheet" href="assets/css/circle_progress_bar.css">
     <!-- Google Tag Manager -->
     <script>
         (function(w, d, s, l, i) {
@@ -1829,6 +1842,19 @@ $user_uid2 = $user_uid;
     <script src="contract/bnb/bnbProjectFunding.js"></script>
     <script src="contract/bnb/bnbContract.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="https://www.jqueryscript.net/demo/jQuery-Circular-Progress-Bar-With-Text-Counter/scripts/plugin.js">
+    </script>
+    <script>
+        $(document).ready(function() {
+            var progress_circle = $(".my-progress-bar").gmpc({
+                line_width: 18,
+                color: "#0ff",
+                starting_position: 50,
+                percent: 0,
+                percentage: true,
+            }).gmpc('animate', 85, 3000);
+        });
+    </script>
     <script>
         $(".avatar-image").letterpic({
             colors: [

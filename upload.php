@@ -34,6 +34,28 @@ if (isset($_SESSION['userAddress'])) {
             header("location:index");
         }
     }
+
+    $total_view_in_sec = '';
+    $get_view_query_3 = "SELECT * FROM `user_login` WHERE `metamask_address`='$user_address';";
+    $result_view_3 = mysqli_query($con, $get_view_query_3);
+    if (mysqli_num_rows($result_view_3) > 0) {
+        while ($row_view_3 = mysqli_fetch_array($result_view_3)) {
+            $user_uid_new = $row_view_3['user_uid'];
+            $total_view_in_sec = $row_view_3['total_time_spend_sec'];
+        }
+    }
+
+
+    $total_time_to_reward = mysqli_query($con, "SELECT * FROM `site_extra_setting` WHERE 1");
+    $total_time_to_reward_in_hr = 0;
+    if (mysqli_num_rows($total_time_to_reward) != 0) {
+        $user_like_status = true;
+        while ($row = mysqli_fetch_assoc($total_time_to_reward)) {
+            $total_time_to_reward_in_hr = $row['total_time_to_reward_in_hr'];
+        }
+    } else {
+        $total_time_to_reward_in_hr = 0;
+    }
 }
 ?>
 
@@ -89,6 +111,7 @@ if (isset($_SESSION['userAddress'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="css/extra-setting.css">
     <link href="assets/toastr/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/circle_progress_bar.css">
     <style>
         .icon {
             display: block;
@@ -267,6 +290,8 @@ if (isset($_SESSION['userAddress'])) {
     </div>
 </div>
 <!-- loader END -->
+<input type="hidden" name="total_time_to_reward_in_hr" value="<?= $total_time_to_reward_in_hr ?>" id="total_time_to_reward_in_hr">
+<input type="hidden" name="total_view_in_sec" value="<?= $total_view_in_sec ?>" id="total_view_in_sec">
 <!-- new loader start -->
 <div class="new-loader-wrapper" style="display:none">
     <div>
@@ -421,7 +446,14 @@ $user_img = '#';
                                 </div>
                             </div>
                             <div class="navbar-right menu-right">
-                                <ul class="d-flex align-items-center list-inline m-0">
+                                <ul class="d-flex align-items-center list-inline m-0 d-flex gap-16">
+                                    <?php
+                                    if ($user_address !== null && $user_address !== '') {
+                                    ?>
+                                        <li class="nav-item nav-icon">
+                                            <div class="my-progress-bar"></div>
+                                        </li>
+                                    <?php } ?>
                                     <li class="nav-item nav-icon">
                                         <a href="#" class="search-toggle device-search">
                                             <i class="ri-search-line"></i>
@@ -1157,6 +1189,50 @@ if ($user_address == null || $user_address == '') {
 <!-- bnb -->
 <script src="contract/bnb/bnbFactoryContract.js"></script>
 <script src="contract/bnb/bnbContract.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://www.jqueryscript.net/demo/jQuery-Circular-Progress-Bar-With-Text-Counter/scripts/plugin.js"></script>
+<script src="assets/js/jquery.peekabar.js"></script>
+<script>
+    $(document).ready(function() {
+        const is_cookies = $.cookie('time');
+        const total_set_watch_in_hr = parseFloat($('#total_time_to_reward_in_hr').val());
+        const total_get_watch_in_sec = parseFloat($('#total_view_in_sec').val());
+        const time_percentage = parseInt((total_get_watch_in_sec / (total_set_watch_in_hr * 60 * 60)) * 100);
+        if (time_percentage > 100) {
+            time_percentage = 100;
+        }
+        var progress_circle = $(".my-progress-bar").gmpc({
+            line_width: 18,
+            color: "#0ff",
+            starting_position: 50,
+            percent: 0,
+            percentage: true,
+        }).gmpc('animate', time_percentage, 3000);
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        customBar.show();
+    });
+    var customBar = new $.peekABar({
+        backgroundColor: '#17a2b8',
+        padding: '1em',
+        cssClass: 'custom-bar',
+        html: '<div class="d-flex justify-content-between align-items-center"><span><b class="text-dark blink_me">Learn with Earn</b>&nbsp;Spend minimum 10 hour to watching our videos, After that a special gift waiting for you !&nbsp;</span><span class="peekbar-close fa fa-close btn-custom-hide" aria-hidden="true"></span></div>',
+        animation: {
+            type: 'slide',
+            duration: 'slow'
+        },
+        cssClass: null,
+        opacity: '1',
+        position: 'top',
+        closeOnClick: false
+    });
+
+    $('.btn-custom-hide').click(function() {
+        customBar.hide();
+    });
+</script>
 <script>
     var crowd_on_off = false;
     var crowdfunding_price_confiramtion = false;

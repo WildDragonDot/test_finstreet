@@ -8,7 +8,7 @@ if (isset($_SESSION['userAddress'])) {
     $user_address = '';
 }
 
-if (isset($_GET['course']) && isset($_GET['module']) && $user_address != '' && $user_address!= null) {
+if (isset($_GET['course']) && isset($_GET['module']) && $user_address != '' && $user_address != null) {
     $course = $_GET['course'];
     $module = $_GET['module'];
 
@@ -63,6 +63,28 @@ if (isset($_SESSION['userAddress'])) {
     }
 }
 
+$total_view_in_sec = '';
+$get_view_query_3 = "SELECT * FROM `user_login` WHERE `metamask_address`='$user_address';";
+$result_view_3 = mysqli_query($con, $get_view_query_3);
+if (mysqli_num_rows($result_view_3) > 0) {
+    while ($row_view_3 = mysqli_fetch_array($result_view_3)) {
+        $user_uid_new = $row_view_3['user_uid'];
+        $total_view_in_sec = $row_view_3['total_time_spend_sec'];
+    }
+}
+
+
+$total_time_to_reward = mysqli_query($con, "SELECT * FROM `site_extra_setting` WHERE 1");
+$total_time_to_reward_in_hr = 0;
+if (mysqli_num_rows($total_time_to_reward) != 0) {
+    $user_like_status = true;
+    while ($row = mysqli_fetch_assoc($total_time_to_reward)) {
+        $total_time_to_reward_in_hr = $row['total_time_to_reward_in_hr'];
+    }
+} else {
+    $total_time_to_reward_in_hr = 0;
+}
+
 ?>
 
 
@@ -115,6 +137,7 @@ if (isset($_SESSION['userAddress'])) {
     <!-- Responsive -->
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/mobileDrawer.css" />
+    <link rel="stylesheet" href="assets/css/circle_progress_bar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <style>
@@ -283,6 +306,8 @@ if (isset($_SESSION['userAddress'])) {
     <div id="loading-center">
     </div>
 </div>
+<input type="hidden" name="total_time_to_reward_in_hr" value="<?= $total_time_to_reward_in_hr ?>" id="total_time_to_reward_in_hr">
+<input type="hidden" name="total_view_in_sec" value="<?= $total_view_in_sec ?>" id="total_view_in_sec">
 <!-- loader END -->
 <?php
 $user_img = '#';
@@ -421,7 +446,14 @@ $user_img = '#';
                                 </div>
                             </div>
                             <div class="navbar-right menu-right">
-                                <ul class="d-flex align-items-center list-inline m-0">
+                                <ul class="d-flex align-items-center list-inline m-0 d-flex gap-16">
+                                    <?php
+                                    if ($user_address !== null && $user_address !== '') {
+                                    ?>
+                                        <li class="nav-item nav-icon">
+                                            <div class="my-progress-bar"></div>
+                                        </li>
+                                    <?php } ?>
                                     <li class="nav-item nav-icon">
                                         <a href="#" class="search-toggle device-search">
                                             <i class="ri-search-line"></i>
@@ -762,43 +794,43 @@ $user_img = '#';
                                     <?php
                                     if ($module_name === "Explainers") {
                                     ?>
-                                    <option value="927f0965-6eed-462c-bfa0-79867c9f9448" selected>Explainers</option>
-                                    <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
-                                    <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
-                                    <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
-                                    <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
+                                        <option value="927f0965-6eed-462c-bfa0-79867c9f9448" selected>Explainers</option>
+                                        <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
+                                        <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
+                                        <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
+                                        <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
                                     <?php
-                                    } else if ($module_name === "Tutorials"){
+                                    } else if ($module_name === "Tutorials") {
                                     ?>
-                                    <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
-                                    <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1" selected>Tutorials</option>
-                                    <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
-                                    <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
-                                    <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
+                                        <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
+                                        <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1" selected>Tutorials</option>
+                                        <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
+                                        <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
+                                        <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
                                     <?php
-                                    }else if ($module_name === "Review"){
+                                    } else if ($module_name === "Review") {
                                     ?>
-                                    <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
-                                    <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
-                                    <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87" selected>Review</option>
-                                    <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
-                                    <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
+                                        <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
+                                        <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
+                                        <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87" selected>Review</option>
+                                        <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
+                                        <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
                                     <?php
-                                    }else if ($module_name === "News"){
+                                    } else if ($module_name === "News") {
                                     ?>
-                                    <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
-                                    <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
-                                    <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
-                                    <option value="5822014a-02af-41c4-8564-0ec4ceba8db6" selected>News</option>
-                                    <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
+                                        <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
+                                        <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
+                                        <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
+                                        <option value="5822014a-02af-41c4-8564-0ec4ceba8db6" selected>News</option>
+                                        <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd">Others</option>
                                     <?php
-                                    }else{
+                                    } else {
                                     ?>
-                                    <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
-                                    <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
-                                    <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
-                                    <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
-                                    <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd" selected>Others</option>
+                                        <option value="927f0965-6eed-462c-bfa0-79867c9f9448">Explainers</option>
+                                        <option value="fd3d24bd-8764-494e-9ade-40911b8e11a1">Tutorials</option>
+                                        <option value="5dae4ba7-933a-40a9-8866-49ee971ccf87">Review</option>
+                                        <option value="5822014a-02af-41c4-8564-0ec4ceba8db6">News</option>
+                                        <option value="0f01d804-648d-42a7-ab11-bdc373f4b7bd" selected>Others</option>
                                     <?php
                                     }
                                     ?>
@@ -931,6 +963,27 @@ $user_img = '#';
 <script src="./frontend/web3-login.js?v=009">
 </script>
 <script src="./frontend/web3-modal.js?v=001"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://www.jqueryscript.net/demo/jQuery-Circular-Progress-Bar-With-Text-Counter/scripts/plugin.js"></script>
+<script src="assets/js/jquery.peekabar.js"></script>
+<script>
+    $(document).ready(function() {
+        const is_cookies = $.cookie('time');
+        const total_set_watch_in_hr = parseFloat($('#total_time_to_reward_in_hr').val());
+        const total_get_watch_in_sec = parseFloat($('#total_view_in_sec').val());
+        const time_percentage = parseInt((total_get_watch_in_sec / (total_set_watch_in_hr * 60 * 60)) * 100);
+        if (time_percentage > 100) {
+            time_percentage = 100;
+        }
+        var progress_circle = $(".my-progress-bar").gmpc({
+            line_width: 18,
+            color: "#0ff",
+            starting_position: 50,
+            percent: 0,
+            percentage: true,
+        }).gmpc('animate', time_percentage, 3000);
+    });
+</script>
 <script>
     document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
         const dropZoneElement = inputElement.closest(".drop-zone");
@@ -1056,7 +1109,7 @@ $user_img = '#';
                     "timeout": 0,
                     "headers": {
                         "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU2NDhlNzIyRTYyQmQ2MDA1MDdmM0YyOTI0Q0ExNjExMUE2QWUyMTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjM4NDM3MTEzNTUsIm5hbWUiOiJmaW5mbGl4LXdlYnNpdGUifQ.KI2sRUCt97cEUug7iMp_qIubBqa8FpHjJhMmRSEgMws"
-                         
+
                     },
                     "processData": false,
                     "mimeType": "multipart/form-data",
@@ -1115,7 +1168,7 @@ $user_img = '#';
                     "timeout": 0,
                     "headers": {
                         "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU2NDhlNzIyRTYyQmQ2MDA1MDdmM0YyOTI0Q0ExNjExMUE2QWUyMTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjM4NDM3MTEzNTUsIm5hbWUiOiJmaW5mbGl4LXdlYnNpdGUifQ.KI2sRUCt97cEUug7iMp_qIubBqa8FpHjJhMmRSEgMws"
-                         
+
                     },
                     "processData": false,
                     "mimeType": "multipart/form-data",
@@ -1176,7 +1229,7 @@ $user_img = '#';
                     "timeout": 0,
                     "headers": {
                         "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU2NDhlNzIyRTYyQmQ2MDA1MDdmM0YyOTI0Q0ExNjExMUE2QWUyMTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjM4NDM3MTEzNTUsIm5hbWUiOiJmaW5mbGl4LXdlYnNpdGUifQ.KI2sRUCt97cEUug7iMp_qIubBqa8FpHjJhMmRSEgMws"
-                         
+
                     },
                     "processData": false,
                     "mimeType": "multipart/form-data",
@@ -1332,6 +1385,29 @@ $user_img = '#';
             }
         }
     }
+</script>
+<script>
+    $(document).ready(function() {
+        customBar.show();
+    });
+    var customBar = new $.peekABar({
+        backgroundColor: '#17a2b8',
+        padding: '1em',
+        cssClass: 'custom-bar',
+        html: '<div class="d-flex justify-content-between align-items-center"><span><b class="text-dark blink_me">Learn with Earn</b>&nbsp;Spend minimum 10 hour to watching our videos, After that a special gift waiting for you !&nbsp;</span><span class="peekbar-close fa fa-close btn-custom-hide" aria-hidden="true"></span></div>',
+        animation: {
+            type: 'slide',
+            duration: 'slow'
+        },
+        cssClass: null,
+        opacity: '1',
+        position: 'top',
+        closeOnClick: false
+    });
+
+    $('.btn-custom-hide').click(function() {
+        customBar.hide();
+    });
 </script>
 </body>
 
