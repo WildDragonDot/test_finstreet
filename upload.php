@@ -112,6 +112,7 @@ if (isset($_SESSION['userAddress'])) {
     <link rel="stylesheet" href="css/extra-setting.css">
     <link href="assets/toastr/toastr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/circle_progress_bar.css">
+    <link rel="stylesheet" href="assets/css/newLoader.css">
     <style>
         .icon {
             display: block;
@@ -290,8 +291,6 @@ if (isset($_SESSION['userAddress'])) {
     </div>
 </div>
 <!-- loader END -->
-<input type="hidden" name="total_time_to_reward_in_hr" value="<?= $total_time_to_reward_in_hr ?>" id="total_time_to_reward_in_hr">
-<input type="hidden" name="total_view_in_sec" value="<?= $total_view_in_sec ?>" id="total_view_in_sec">
 <!-- new loader start -->
 <div class="new-loader-wrapper" style="display:none">
     <div>
@@ -314,6 +313,8 @@ if (isset($_SESSION['userAddress'])) {
     </div>
 </div>
 <!-- new loader end -->
+<input type="hidden" name="total_time_to_reward_in_hr" value="<?= $total_time_to_reward_in_hr ?>" id="total_time_to_reward_in_hr">
+<input type="hidden" name="total_view_in_sec" value="<?= $total_view_in_sec ?>" id="total_view_in_sec">
 <?php
 $user_img = '#';
 ?>
@@ -1610,6 +1611,10 @@ if ($user_address == null || $user_address == '') {
                                     success: function(data) {
                                         data = JSON.parse(data);
                                         if (data.status == 201) {
+                                            $(".new-loader-wrapper").css("display", "none");
+                                            $(".new-loader-wrapper").addClass("d-lg-none");
+                                            $(".new-loader-wrapper").addClass("d-md-none");
+                                            $(".new-loader-wrapper").addClass("d-sm-none");
                                             btn.classList.remove("button--loading");
                                             swal("Video Uploaded Successfully!", {
                                                 icon: "success",
@@ -1690,6 +1695,10 @@ if ($user_address == null || $user_address == '') {
                                     success: function(data) {
                                         data = JSON.parse(data);
                                         if (data.status == 201) {
+                                            $(".new-loader-wrapper").css("display", "none");
+                                            $(".new-loader-wrapper").addClass("d-lg-none");
+                                            $(".new-loader-wrapper").addClass("d-md-none");
+                                            $(".new-loader-wrapper").addClass("d-sm-none");
                                             btn.classList.remove("button--loading");
                                             swal("Video Uploaded Successfully!", {
                                                 icon: "success",
@@ -1770,6 +1779,10 @@ if ($user_address == null || $user_address == '') {
                                     success: function(data) {
                                         data = JSON.parse(data);
                                         if (data.status == 201) {
+                                            $(".new-loader-wrapper").css("display", "none");
+                                            $(".new-loader-wrapper").addClass("d-lg-none");
+                                            $(".new-loader-wrapper").addClass("d-md-none");
+                                            $(".new-loader-wrapper").addClass("d-sm-none");
                                             btn.classList.remove("button--loading");
                                             swal("Video Uploaded Successfully!", {
                                                 icon: "success",
@@ -1863,6 +1876,10 @@ if ($user_address == null || $user_address == '') {
                             success: function(data) {
                                 data = JSON.parse(data);
                                 if (data.status == 201) {
+                                    $(".new-loader-wrapper").css("display", "none");
+                                    $(".new-loader-wrapper").addClass("d-lg-none");
+                                    $(".new-loader-wrapper").addClass("d-md-none");
+                                    $(".new-loader-wrapper").addClass("d-sm-none");
                                     btn.classList.remove("button--loading");
                                     swal("Video Uploaded Successfully!", {
                                         icon: "success",
