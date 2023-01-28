@@ -204,6 +204,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
     <link rel="shortcut icon" href="images/favicon.ico" />
 
     <!-- Enter Page Specific CSS here. Please make sure all the CSS  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <!-- Typography CSS -->
@@ -221,6 +222,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
     <link rel="stylesheet" href="assets/css/croudFundingUI.css">
     <link rel="stylesheet" href="assets/css/slider_panel.css">
     <link rel="stylesheet" href="assets/css/circle_progress_bar.css">
+    <link rel="stylesheet" href="Vendor/css/socialSharing.css">
     <!-- Google Tag Manager -->
     <script>
         (function(w, d, s, l, i) {
@@ -1015,7 +1017,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
                                         <span class="likeclass" id="dislikeData"><?= $video_dislike ?></span>
                                     </span>
                                 </div>
-                                <div class="d-flex justify-content-center align-items-center gap-2 like-panel py-3">
+                                <div class="d-flex justify-content-center align-items-center gap-2 like-panel py-3" onclick="openShareModel()" style="cursor: pointer;">
                                     <span class="d-flex justify-content-center align-items-center gap-2">
                                         <i class="fa fa-share"></i><span class="likeclass">Share</span>
                                     </span>
@@ -1795,6 +1797,22 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
         </div><!-- modal-dialog -->
     </div>
     <!-- inverstor show modal end -->
+
+    <!-- share model start -->
+    <div class="modal fade" id="viewShareModal" tabindex="-1" aria-labelledby="viewShareModalLabel" aria-hidden="true" style="background:#6e6e6e7a;">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content" style="border-radius:15px;background: #141414;">
+                <div class="modal-header d-flex justify-content-between align-items-center" style="padding:15px;border-color:#e5e5e5;">
+                    <span data-bs-dismiss="modal" class="modal-title" aria-label="Close" style="cursor:pointer;font-weight:800;color:#e9ecef">Close</span>
+                    <span class="modal-title" aria-label="Close" style="font-weight:800;color:#3f4458;">
+                </div>
+                <div class="modal-body">
+                    <div id="Demo2" class="d-flex align-items-center justify-content-center my-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- share model end -->
     <!-- back-to-top -->
     <div id="back-to-top">
         <a class="top" href="#top" id="top"> <i class="fa fa-angle-up"></i> </a>
@@ -1844,6 +1862,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script type="text/javascript" src="https://www.jqueryscript.net/demo/jQuery-Circular-Progress-Bar-With-Text-Counter/scripts/plugin.js">
     </script>
+    <script src="Vendor/js/socialSharing.js"></script>
     <script>
         $(document).ready(function() {
             var progress_circle = $(".my-progress-bar").gmpc({
@@ -3066,8 +3085,23 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
             }
         }, 10000);
     </script>
+    <script>
+        $('#Demo2').socialSharingPlugin({
+            url: window.location.href,
+            title: $('meta[property="og:title"]').attr('content'),
+            description: $('meta[property="og:description"]').attr('content'),
+            img: $('meta[property="og:image"]').attr('content'),
+            responsive: false,
+            mobilePosition: 'left',
+            enable: ['copy', 'facebook', 'twitter', 'pinterest', 'linkedin', 'reddit', 'stumbleupon', 'pocket', 'email', 'whatsapp']
+        });
+
+        function openShareModel() {
+            $('#viewShareModal').modal('show');
+        }
+    </script>
 </body>
 
 </html>
 <?php
-?>
+?>b
