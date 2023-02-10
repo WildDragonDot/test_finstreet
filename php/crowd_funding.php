@@ -23,7 +23,7 @@ if (isset($_POST['project_address'])) {
     }
 
     $crowd_fund_uuid = guidv4(openssl_random_pseudo_bytes(16));
-    $post_uid =  strip_tags($_POST['post_uid']);
+    $post_uid =  strip_tags($_POST['video_uuid']);
     $user_address =  strip_tags($_POST['user_address']);
     $pay_amount = strip_tags($_POST['pay_amount']);
     $pay_amount_in = strip_tags($_POST['pay_amount_in']);
