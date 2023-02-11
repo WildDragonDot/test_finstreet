@@ -1320,6 +1320,7 @@ if ($user_address == null || $user_address == '') {
 </script>
 <script>
     async function fun_project_qri(crowd_project_uri) {
+        console.log($('#min_donation_matic').val(),$('#target_amount_matic').val(),'hello this is');
         console.log(JSON.stringify(crowd_project_uri));
         const projectId = '2DInI7VLAGEHD8O9MjGjm2HDlo5';
         const projectSecret = 'f69504cfab98937d3b6bd405d175420a';
@@ -1534,8 +1535,8 @@ if ($user_address == null || $user_address == '') {
                             // username: username,
                         },
                         crowdfunding_details: {
-                            min_pay_amount: crowd_min_amount,
-                            target_amount: crowd_target_amount,
+                            min_pay_amount: crowd_min_amount_matic,
+                            target_amount: crowd_target_amount_matic,
                             amount_in: crowd_amount_in
                         },
                         created_at: crowd_current_datetime,
@@ -1560,8 +1561,8 @@ if ($user_address == null || $user_address == '') {
                             // username: username,
                         },
                         crowdfunding_details: {
-                            min_pay_amount: crowd_min_amount,
-                            target_amount: crowd_target_amount,
+                            min_pay_amount: crowd_min_amount_bnb,
+                            target_amount: crowd_target_amount_bnb,
                             amount_in: crowd_amount_in
                         },
                         created_at: crowd_current_datetime,
