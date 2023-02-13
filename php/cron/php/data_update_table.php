@@ -6,7 +6,7 @@ if (mysqli_connect_error()) {
 
 $data = array();
 
-if (isset($_POST['update_project_uri_link']) && !empty($_POST['name'])) {
+if (isset($_POST['name']) && !empty($_POST['name'])) {
     date_default_timezone_set("Asia/Calcutta");
     $date_now = date("r");
     $from_ip = $_SERVER['REMOTE_ADDR'];
