@@ -59,7 +59,12 @@
             formData_update.append('update_project_creater', update_project_creater);
             formData_update.append('project_address', projectAddress);
 
-            fetch(update_project_uri_link).then((response) => response.json()).then((data) => {
+            fetch(update_project_uri_link).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Something went wrong');
+            }).then((data) => {
                 const name = data[0].content.title;
                 const description = data[0].content.story;
                 const thumbnail_ipfs = data[0].content.thumbnail_url;
