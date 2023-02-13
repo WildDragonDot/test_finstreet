@@ -1853,7 +1853,7 @@ if (mysqli_num_rows($total_time_to_reward) != 0) {
     <script src="https://cdn.jsdelivr.net/npm/near-api-js@0.41.0/dist/near-api-js.min.js"></script>
     <script src="assets/toastr/toastr.min.js"></script>
     <script src="contract/projectFunding.js"></script>
-    <script src="contract/contract.js"></script>
+    <script src="contract/EthContract.js"></script>
     <script src="contract/matic/maticProjectFunding.js"></script>
     <script src="contract/matic/maticContract.js"></script>
     <!-- bnb -->

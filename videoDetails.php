@@ -1343,7 +1343,7 @@ if ($user_address == null || $user_address == '') {
 <script src="https://cdn.jsdelivr.net/npm/near-api-js@0.41.0/dist/near-api-js.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.1-rc.0/web3.min.js"></script>
 <script src="contract/projectFunding.js"></script>
-<script src="contract/contract.js"></script>
+<script src="contract/EthContract.js"></script>
 
 <script src="contract/matic/maticProjectFunding.js"></script>
 <script src="contract/matic/maticContract.js"></script>
