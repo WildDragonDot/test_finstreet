@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Update Database</title>
 </head>
+<h1 style="text-align: center;" id="data_status_show">Please wait your database updated autometically...</h1>
 
 <body>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -40,9 +41,9 @@
                 await myProjectContract.methods.getProjects().call({
                     from: currentaddress
                 }).then((res) => {
-                    // const first_user = res[0];
+                    const total_count_data = res.length;
                     res.map((val, key) => {
-                        getEachProjectMatic(val);
+                        getEachProjectMatic(val, key + 1, total_count_data);
                     });
                 }).catch((err) => {
                     console.log(err);
@@ -101,28 +102,28 @@
                 formData_update.append('amount_in', amount_in);
                 formData_update.append('user_address', user_address);
                 $.ajax({
-                        url: "php/data_update_table.php",
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: formData_update,
-                        success: function(data) {
-                            data = JSON.parse(data);
-                            console.log(data);
-                            if (data.status == 201) {
-                                // updateCrowdData(res, projectAddress);
-                            } else if (data.status == 601) {
-                                console.log("Data already exist");
-                            } else if (data.status == 404) {
-                                console.log(data.error);
-                            }
+                    url: "php/data_update_table.php",
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: formData_update,
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        if (data.status == 201) {
+                            // updateCrowdData(res, projectAddress);
+                        } else if (data.status == 601) {
+                            console.log("Data already exist");
+                        } else if (data.status == 404) {
+                            console.log(data.error);
                         }
-                    });
+                    }
+                });
             });
         }
 
-        async function getEachProjectMatic(projectAddress) {
+        async function getEachProjectMatic(projectAddress, key, total_count_data) {
             if (window.ethereum) {
                 var accounts = await ethereum.request({
                     method: 'eth_requestAccounts'
@@ -149,6 +150,10 @@
                                 console.log("Data already exist");
                             } else if (data.status == 404) {
                                 console.log(data.error);
+                            }
+                            if (key === total_count_data) {
+                                alert('Data updated successfully.');
+                                $('#data_status_show').html('Data updated successfully.');
                             }
                         }
                     });
