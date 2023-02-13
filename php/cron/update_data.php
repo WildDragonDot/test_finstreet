@@ -28,7 +28,7 @@
     <script>
         async function getAllProjectsMatic() {
             if (window.ethereum) {
-                
+
                 var accounts = await ethereum.request({
                     method: 'eth_requestAccounts'
                 });
@@ -41,7 +41,7 @@
                     from: currentaddress
                 }).then((res) => {
                     // const first_user = res[0];
-                    res.map((val,key)=>{
+                    res.map((val, key) => {
                         getEachProjectMatic(val);
                     });
                 }).catch((err) => {
@@ -52,10 +52,78 @@
             }
         }
 
+        async function updateCrowdData(updateData, projectAddress) {
+            var formData_update = new FormData();
+            const update_min_donation = web3.utils.fromWei(updateData[0].toString(), 'ether');
+            const update_target_donation = web3.utils.fromWei(updateData[1].toString(), 'ether');
+            const update_project_uri_link = updateData[2].toString();
+            const update_project_creater = updateData[3].toString();
+
+            formData_update.append('update_min_donation', update_min_donation);
+            formData_update.append('update_target_donation', update_target_donation);
+            formData_update.append('update_project_uri_link', update_project_uri_link);
+            formData_update.append('update_project_creater', update_project_creater);
+            formData_update.append('project_address', projectAddress);
+
+            fetch(update_project_uri_link).then((response) => response.json()).then((data) => {
+                const name = data[0].content.title;
+                const description = data[0].content.story;
+                const thumbnail_ipfs = data[0].content.thumbnail_url;
+                const video_ipfs = data[0].content.video_url;
+                const module_uuid = data[0].content.category;
+                const user_type = data[0].content.user_type;
+
+                var module = '';
+                if (module_uuid == '927f0965-6eed-462c-bfa0-79867c9f9448') {
+                    module = 'Explainers';
+                } else if (module_uuid == 'fd3d24bd-8764-494e-9ade-40911b8e11a1') {
+                    module = 'Tutorials';
+                } else if (module_uuid == '5dae4ba7-933a-40a9-8866-49ee971ccf87') {
+                    module = 'Review';
+                } else if (module_uuid == '5822014a-02af-41c4-8564-0ec4ceba8db6') {
+                    module = 'News';
+                } else if (module_uuid == '0f01d804-648d-42a7-ab11-bdc373f4b7bd') {
+                    module = 'Others';
+                } else {
+                    module = '';
+                }
+                const amount_in = data[0].crowdfunding_details.amount_in;
+                const user_address = data[0].author.address;
+
+                formData_update.append('user_type', user_type);
+                formData_update.append('name', name);
+                formData_update.append('module', module);
+                formData_update.append('module_uuid', module_uuid);
+                formData_update.append('video_ipfs', video_ipfs);
+                formData_update.append('thumbnail_ipfs', thumbnail_ipfs);
+                formData_update.append('description', description);
+                formData_update.append('is_croudfunded', 'true');
+                formData_update.append('amount_in', amount_in);
+                formData_update.append('user_address', user_address);
+                $.ajax({
+                        url: "php/data_update_table.php",
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData_update,
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            console.log(data);
+                            if (data.status == 201) {
+                                // updateCrowdData(res, projectAddress);
+                            } else if (data.status == 601) {
+                                console.log("Data already exist");
+                            } else if (data.status == 404) {
+                                console.log(data.error);
+                            }
+                        }
+                    });
+            });
+        }
 
         async function getEachProjectMatic(projectAddress) {
             if (window.ethereum) {
-                
                 var accounts = await ethereum.request({
                     method: 'eth_requestAccounts'
                 });
@@ -63,19 +131,27 @@
                 web3 = new Web3(window.ethereum);
                 myProjectContract = new web3.eth.Contract(maticProjectFunding, projectAddress);
                 await myProjectContract.methods.getProjectData().call().then((res) => {
-                    console.log(res);
-                    // fetch(res[2])
-                    // .then((response) => response.json())
-                    // .then((data) => console.log(data[0]));
-
-                    
-                    // const total_get_fund = res[5];
-                    // const total_withdrawal_eth = res[4];
-                    // const withdrawalEth = web3.utils.fromWei(total_withdrawal_eth.toString(),
-                    //     'ether');
-                    // $('#withdrawal_eth').text(withdrawalEth);
-                    // const recievedEth = web3.utils.fromWei(total_get_fund.toString(), 'ether');
-                    // $('#recieved_eth').text(recievedEth);
+                    // console.log(res);
+                    var formData = new FormData();
+                    formData.append('project_address', projectAddress.toString());
+                    $.ajax({
+                        url: "php/data_update_check.php",
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            if (data.status == 201) {
+                                updateCrowdData(res, projectAddress);
+                            } else if (data.status == 601) {
+                                console.log("Data already exist");
+                            } else if (data.status == 404) {
+                                console.log(data.error);
+                            }
+                        }
+                    });
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -83,7 +159,6 @@
                 console.log("Please connect with metamask");
             }
         }
-
 
         getAllProjectsMatic();
     </script>
