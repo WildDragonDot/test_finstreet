@@ -7,20 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Database</title>
 </head>
-<h1 style="text-align: center;" id="data_status_show">Please wait your database updated autometically...</h1>
+<h1 style="text-align: center;" id="data_status_show">Please wait your ETH crowdfunding database updated autometically...</h1>
 
 <body>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/near-api-js@0.41.0/dist/near-api-js.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.1-rc.0/web3.min.js"></script>
 
-    <!-- matic -->
-    <script src="../../contract/matic/maticFactoryContract.js"></script>
-    <script src="../../contract/matic/maticContract.js"></script>
+    <script src="../../contract/EthAbi.js"></script>
+    <script src="../../contract/EthContract.js"></script>
     <!-- prject Address  -->
-    <script src="../../contract/matic/maticProjectFunding.js"></script>
+    <script src="../../contract/projectFunding.js"></script>
     <script>
-        async function getAllProjectsMatic() {
+        async function getAllProjectsETH() {
             if (window.ethereum) {
 
                 var accounts = await ethereum.request({
@@ -29,14 +28,14 @@
                 var currentaddress = accounts[0];
                 web3 = new Web3(window.ethereum);
 
-                myProjectContract = new web3.eth.Contract(maticFactoryContract, maticContract);
+                myProjectContract = new web3.eth.Contract(factoryContract, contractAddress);
 
                 await myProjectContract.methods.getProjects().call({
                     from: currentaddress
                 }).then((res) => {
                     const total_count_data = res.length;
                     res.map((val, key) => {
-                        getEachProjectMatic(val, key + 1, total_count_data);
+                        getEachProjectETH(val, key + 1, total_count_data);
                     });
                 }).catch((err) => {
                     console.log(err);
@@ -95,7 +94,7 @@
                 formData_update.append('amount_in', amount_in);
                 formData_update.append('user_address', user_address);
                 $.ajax({
-                    url: "php/data_update_table.php",
+                    url: "php/eth_data_update_table.php",
                     type: "POST",
                     cache: false,
                     contentType: false,
@@ -116,20 +115,20 @@
             });
         }
 
-        async function getEachProjectMatic(projectAddress, key, total_count_data) {
+        async function getEachProjectETH(projectAddress, key, total_count_data) {
             if (window.ethereum) {
                 var accounts = await ethereum.request({
                     method: 'eth_requestAccounts'
                 });
                 var currentaddress = accounts[0];
                 web3 = new Web3(window.ethereum);
-                myProjectContract = new web3.eth.Contract(maticProjectFunding, projectAddress);
+                myProjectContract = new web3.eth.Contract(projectFunding, projectAddress);
                 await myProjectContract.methods.getProjectData().call().then((res) => {
                     // console.log(res);
                     var formData = new FormData();
                     formData.append('project_address', projectAddress.toString());
                     $.ajax({
-                        url: "php/data_update_check.php",
+                        url: "php/eth_data_update_check.php",
                         type: "POST",
                         cache: false,
                         contentType: false,
@@ -158,7 +157,7 @@
             }
         }
 
-        getAllProjectsMatic();
+        getAllProjectsETH();
     </script>
 </body>
 
