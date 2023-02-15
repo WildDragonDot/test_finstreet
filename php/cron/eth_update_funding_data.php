@@ -68,7 +68,7 @@
                         formData_update_new.append('user', eachUser.toLowerCase());
                         formData_update_new.append('projectAddress', projectAddress);
                         formData_update_new.append('pay_amount_in', pay_amount_in);
-                        formData_update_new.append('diff_amount', parseFloat(diff_amount).toFixed(2));
+                        formData_update_new.append('diff_amount', parseFloat(diff_amount).toFixed(4));
                         formData_update_new.append('thumbnail_url', thumbnail_url);
                         formData_update_new.append('video_url', video_url);
                         $.ajax({
