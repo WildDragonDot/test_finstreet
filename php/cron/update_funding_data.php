@@ -47,7 +47,6 @@
         }
 
         async function upload_extra_money(diff_amount, pay_amount_in, projectAddress, eachUser) {
-            // console.log(diff_amount, pay_amount_in, projectAddress, eachUser);
             if (window.ethereum) {
                 var accounts = await ethereum.request({
                     method: 'eth_requestAccounts'
@@ -91,10 +90,6 @@
                             }
                         });
                     })
-                    // console.log(res,'this is res');
-                    // if (res.length > 0) {
-                    //     getInvestmentDetails(res, projectAddress);
-                    // }
                 }).catch((err) => {
                     console.log(err);
                 });
@@ -104,7 +99,6 @@
         }
 
         async function getInvestmentDetails(userAddress, projectAddress) {
-            // console.log(projectAddress,'projectAddress');
             var accounts = await ethereum.request({
                 method: 'eth_requestAccounts'
             });
@@ -143,7 +137,6 @@
                                             console.log('all things ok ..no need to update');
                                         }
                                     } else {
-                                        // console.log('not exist');
                                         upload_extra_money(parseFloat(pay_amount), pay_amount_in, projectAddress, eachUser);
                                     }
                                 } else if (data.status == 601) {
@@ -153,7 +146,6 @@
                                 }
                             }
                         });
-
                     }
                     single_project_address = projectAddress;
                     single_user_address = eachUser;
