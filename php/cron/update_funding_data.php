@@ -8,6 +8,8 @@
     <title>Update Database</title>
 </head>
 <h1 style="text-align: center;" id="data_status_show">Please wait your database updated autometically...</h1>
+<div style="text-align: center;margin:1rem;"><small><b style="text-decoration: underline;">Note:</b>&nbsp;If data not update autometically then press update button.</small></div>
+<div style="display:flex;justify-content:center;align-items:center"><button onclick="checknet()" style="text-align:center;padding: 8px 25px;background: #096dc3;border-color: #096dc3;color: #fff;font-size: 1rem;cursor:pointer">Update</button></div>
 
 <body>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -67,7 +69,7 @@
                         formData_update_new.append('user', eachUser);
                         formData_update_new.append('projectAddress', projectAddress);
                         formData_update_new.append('pay_amount_in', pay_amount_in);
-                        formData_update_new.append('diff_amount', diff_amount);
+                        formData_update_new.append('diff_amount', parseFloat(diff_amount).toFixed(2));
                         formData_update_new.append('thumbnail_url', thumbnail_url);
                         formData_update_new.append('video_url', video_url);
                         $.ajax({
@@ -176,7 +178,31 @@
             }
         }
 
-        getAllProjectsMatic();
+        async function changeNetwork(chainId) {
+            console.log(window.ethereum.networkVersion);
+            if (window.ethereum.networkVersion !== chainId) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{
+                            chainId: `0x${chainId}`
+                        }],
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        }
+
+        function checknet() {
+            if ((window.ethereum.networkVersion) !== '80001') {
+                changeNetwork('13881');
+            } else {
+                getAllProjectsMatic();
+            }
+        }
+
+        checknet();
     </script>
 </body>
 
