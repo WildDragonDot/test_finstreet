@@ -66,7 +66,7 @@
                         const thumbnail_url = data[0].content.thumbnail_url;
                         const video_url = data[0].content.video_url;
                         var formData_update_new = new FormData();
-                        formData_update_new.append('user', eachUser);
+                        formData_update_new.append('user', eachUser.toLowerCase());
                         formData_update_new.append('projectAddress', projectAddress);
                         formData_update_new.append('pay_amount_in', pay_amount_in);
                         formData_update_new.append('diff_amount', parseFloat(diff_amount).toFixed(2));
